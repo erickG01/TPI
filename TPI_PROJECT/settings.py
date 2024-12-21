@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 # Import dj-database-url at the beginning of the file.
 import dj_database_url
+from waitress import serve
+from TPI_PROJECT.wsgi import application
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Para cliente
