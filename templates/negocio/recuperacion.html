@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 100px;
+        }
+        .content {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Recuperación de Contraseña</h2>
+        </div>
+        <div class="content">
+            <p>Hemos recibido una solicitud para restablecer tu contraseña. Si fuiste tú, por favor haz clic en el siguiente botón para continuar con el proceso:</p>
+            <a href="{{ enlace_recuperacion }}" class="btn" style="background-color: #007bff; color: #fff;">Restablecer Contraseña</a>
+            <p>Si no solicitaste el cambio de contraseña, puedes ignorar este correo.</p>
+        </div>
+        <div class="footer">
+            <p>Este correo electrónico fue enviado por el equipo de soporte de TPI115 GP 05.</p>
+        </div>
+    </div>
+</body>
+</html>

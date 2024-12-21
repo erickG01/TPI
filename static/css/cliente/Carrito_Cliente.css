@@ -1,0 +1,58 @@
+.input-group {
+    max-width: 120px;
+    margin: 0 auto;
+}
+
+.input-group .form-control {
+    width: 50px;
+    text-align: center;
+}
+
+
+/*estilo botones*/
+.btn-dark{
+    background-color: rgb(231, 42, 105);
+    
+}
+
+.btn-dark:hover{
+    background-color:   rgb(255, 84, 141);
+}
+
+.btn-primary{
+    background-color:rgb(0, 0, 0);
+    margin-left: 30%;
+}
+
+.btn-primary:hover{
+    background-color:black;
+}
+
+.btn-warning{
+    background-color: rgb(231, 42, 105);
+    color: white;
+    
+}
+.toast-container {
+    position: fixed;
+    top: 20px;   /* Ajusta la distancia desde la parte superior */
+    right: 20px; /* Ajusta la distancia desde la parte derecha */
+    z-index: 1050; /* Asegura que el toast esté por encima de otros elementos */
+}
+
+.toast {
+    opacity: 1 !important;
+    transition: opacity 0.5s ease-in-out; 
+}
+
+.toast-body {
+    background-color: #28a745; /* Color de fondo verde */
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+h2{margin-left: 5%;}
+h3{margin-left: 5%;}
+.table-responsive{margin-left: 5%;
+     margin-right: 5%;
+}

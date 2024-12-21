@@ -1,0 +1,29 @@
+body {
+    background-color:#ffffff; 
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #000000; 
+}
+
+form.shadow {
+    width: 100%;
+    max-width: 500px;
+    background-color: #f6f6f6 !important;
+    font-style: italic;
+    color: #000000;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.btn-dark{
+    background-color:rgb(231, 42, 105);
+    
+}
+
+.btn-dark:hover {
+    background-color: rgb(255, 84, 141);
+}
+
+

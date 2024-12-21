@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}{% endblock %}</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <!-- DataTables Responsive -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css">
+    <!-- icons Bootsrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Sweet Alert 2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    
+    <header>
+        <nav class="navbar navbar-expand-lg {{color_scheme.color_secundario}} border-bottom border-body">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="{% url 'inicio_negocio_menu'%}">Empresa</a>
+                <button class="navbar-toggler {{color_scheme.color_primario}}" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav d-flex justify-content-between w-100">
+                        <li class="nav-item ms-3">
+                            <a class="nav-link  {{color_scheme.color_texto_secundario}} text-center" href="{% url 'inicio_producto' %}">Gestionar Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{color_scheme.color_texto_secundario}} text-center" href="{% url 'crear_menu'%}">Crear Menú</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{color_scheme.color_texto_secundario}} text-center" href="{% url 'menus_disponibles'%}">Gestionar Menús</a>
+                        </li>
+                        <li class="nav-item dropdown me-3 ">
+                            <a class="nav-link dropdown-toggle text-white text-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Informacion Personal
+                            </a>
+                            <ul class="dropdown-menu {{color_scheme.color_primario}} dropdown-menu-end">
+                                <li><a class="dropdown-item bg-transparent {{color_scheme.color_texto_primario}}" href="{% url 'negocio_perfil' %}">Perfil</a></li>
+                                <li><a class="dropdown-item bg-transparent {{color_scheme.color_texto_primario}}" href="#">Seguridad</a></li>
+                                <li><a class="dropdown-item bg-transparent {{color_scheme.color_texto_primario}}" href="{% url 'preferencias' %}">Preferencias</a></li>
+                                <li><a class="dropdown-item bg-transparent {{color_scheme.color_texto_primario}}" href="{% url 'soporte' %}">Soporte y Ayuda</a></li>
+                                <li><a class="dropdown-item bg-transparent {{color_scheme.color_texto_primario}}" href="#">Configurar Empresa</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item bg-transparent  {{color_scheme.color_texto_primario}}" href="{% url 'cerrar_sesion_negocio' %}">Cerrar Sesion</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>        
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js"></script>
+
+    <script>
+        
+                $(function () {
+            $("#example3").DataTable({
+                "pageLength": 5,
+                "language": {
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
+                    "infoFiltered": "(Filtrado de MAX total Productos)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Productos",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscador:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo"
+                    }
+                },
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": false,
+            });
+        });
+
+    </script>
+</body>
+</html>

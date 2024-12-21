@@ -1,0 +1,36 @@
+    /* Estilos personalizados */
+    .navbar {
+      background-color: #fff;
+      border-bottom: 2px solid #ff64aa;      
+    }
+
+    .navbar-brand {
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      color: #ff5ab5;
+    }
+
+    .navbar-brand:hover {
+      color: #ff5ab5;
+    }
+
+    .nav-link {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #555;
+      text-align: center;
+    }
+
+    .nav-link:hover {
+      color: #ff5ab5;
+    }
+
+    .nav-link i {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .nav-item {
+      flex-grow: 1;
+    }

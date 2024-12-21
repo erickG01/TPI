@@ -1,0 +1,77 @@
+{% extends 'cliente/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        {% load static %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Direcciones de Entrega</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/cliente/direcciones.css' %}">
+    </head>
+    <body>
+        <div class="container my-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-4">Principales direcciones de entrega</h4>
+                    
+                    <!-- Iterar sobre las direcciones -->
+                    {% for direccion in direcciones %}
+                    <div class="direccion d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <!-- Lógica condicional para seleccionar el ícono -->
+                            {% if "casa" in direccion.nombre_direccion|lower %}
+                                <i class="fas fa-home me-2"></i>
+                            {% elif "trabajo" in direccion.nombre_direccion|lower or "negocio" in direccion.nombre_direccion|lower %}
+                                <i class="fas fa-briefcase me-2"></i>
+                            {% elif "escuela" in direccion.nombre_direccion|lower or "universidad" in direccion.nombre_direccion|lower %}
+                                <i class="fas fa-school me-2"></i>
+                            {% else %}
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                            {% endif %}
+                            <span class="fw-bold">{{ direccion.nombre_direccion }}</span>
+                            <p class="text-muted mb-0">
+                                {{ direccion.calle }},
+                                {{ direccion.punto_referencia }},
+                                {{ direccion.municipio }},
+                                {{ direccion.departamento }}
+                            </p>
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" type="button">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'editar_direccion' direccion.id_direccion %}" class="dropdown-item">
+                                    <i class="fas fa-edit"></i> Editar dirección
+                                </a>
+                                <form action="{% url 'eliminar_direccion' direccion.id_direccion %}" method="POST" style="display: inline;">
+                                  {% csrf_token %}
+                                  <button type="submit" class="dropdown-item btn-delete">
+                                      <i class="fas fa-trash"></i> Borrar esta dirección
+                                  </button>
+                              </form>
+                              
+                              
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <!-- Botón Crear nueva dirección -->
+                    <a class="btn btn-crear-direccion w-100 fw-bold" href="{% url 'mapa' %}?next={% url 'crear_direccion' %}">
+                        Crear nueva dirección
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+       
+    </body>
+</html>
+{% endblock %}
+

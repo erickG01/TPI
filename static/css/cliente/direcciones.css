@@ -1,0 +1,149 @@
+.container {
+    font-family: Arial, sans-serif;
+}
+
+.direccion {
+    padding: 10px 0;
+    position: relative; /* Para posicionar la línea de hover */
+    transition: border-bottom 0.3s ease; /* Animación de la línea */
+    cursor: pointer;
+}
+
+/* Línea al pasar el mouse con animación */
+.direccion:hover {
+    border-bottom: 2px solid rgb(255, 84, 141); /* Línea rosa */
+}
+
+/* Iconos siempre en rosa */
+.direccion i {
+    color: rgb(255, 84, 141); /* Rosa inicial */
+    transition: color 0.3s ease; /* Animación del cambio de color */
+}
+
+/* Estilo del menú desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: rgb(255, 84, 141); /* Ícono del botón en rosa */
+    transition: color 0.3s ease; /* Animación del color del ícono */
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 150px;
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Animación de aparición */
+    transform: translateY(-10px); /* Posición inicial */
+    opacity: 0; /* Invisible inicialmente */
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    text-decoration: none;
+    color: #000; /* Texto negro por defecto */
+    font-size: 16px; /* Tamaño uniforme para todos los botones */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animación del fondo y color */
+}
+
+.dropdown-menu a i {
+    margin-right: 10px;
+    color: rgb(255, 84, 141); /* Iconos en color rosa por defecto */
+    transition: color 0.3s ease; /* Animación del color */
+}
+
+.dropdown-menu a:hover {
+    background-color: #f8f9fa; /* Fondo claro al hacer hover */
+    color: rgb(255, 84, 141); /* Texto rosa al hacer hover */
+}
+
+.dropdown-menu a:hover i {
+    color: rgb(255, 84, 141); /* Íconos permanecen rosa */
+}
+
+.dropdown-menu a.text-danger {
+    color: #dc3545; /* Rojo por defecto */
+}
+
+/* Hover del botón de borrar (texto e íconos en rosa) */
+.dropdown-menu a.text-danger:hover {
+    background-color: #ff7070; /* Fondo más claro */
+    color: rgb(255, 84, 141) !important; /* Texto rosa */
+}
+.dropdown-menu a.text-danger:hover i {
+    color: rgb(255, 84, 141) !important; /* Íconos en rosa */
+}
+
+/* Mostrar el menú con animación */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    transform: translateY(0); /* Vuelve a la posición original */
+    opacity: 1; /* Visible */
+}
+
+/* Botón "Crear nueva dirección" */
+.btn-crear-direccion {
+    background-color: rgb(255, 84, 141); /* Color de fondo rosa */
+    color: #fff; /* Texto blanco */
+    border: none; /* Sin borde */
+    padding: 12px 20px; /* Ajuste del tamaño */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animación del cambio de color */
+}
+
+.btn-crear-direccion:hover {
+    background-color: rgb(199, 0, 66); /* Fondo negro al hacer hover */
+    color: rgb(255, 255, 255); /* Texto rosa */
+}
+
+/* Asegurando uniformidad en botones dentro del menú desplegable */
+.dropdown-item {
+    width: 100%; /* Todos los botones ocupan el mismo ancho */
+    text-align: left;
+    font-size: 16px;
+}
+/* Estilo del botón de borrar - negro por defecto */
+form button.btn-delete {
+    color: #000; /* Texto negro */
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    text-align: left; /* Alineación del texto */
+    width: 100%; /* Ocupa todo el ancho */
+    cursor: pointer;
+    padding: 10px; /* Tamaño ajustado */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animación de transición */
+}
+
+/* Hover del botón de borrar - rosa cuando el mouse pasa */
+form button.btn-delete:hover {
+    background-color: #f8f9fa; /* Fondo más claro */
+    color: rgb(255, 84, 141); /* Texto rosa */
+}
+
+/* Color rosa en el ícono al pasar el mouse */
+form button.btn-delete:hover i {
+    color: rgb(255, 84, 141); /* Íconos en rosa */
+}
+
+
+
+
+

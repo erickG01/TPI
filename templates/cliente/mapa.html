@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar ubicación</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="{% static 'css/cliente/mapa.css' %}">
+</head>
+<body>
+    <h1>Selecciona tu ubicación</h1>
+    <div id="map"></div>
+    <a id="confirmLocation" href="#">Confirmar ubicación</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener el parámetro 'next' de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const nextUrl = urlParams.get('next');
+
+            // Configurar dinámicamente el enlace del botón Confirmar
+            const confirmLocationLink = document.getElementById('confirmLocation');
+            if (nextUrl) {
+                confirmLocationLink.href = nextUrl;
+            } else {
+                alert('No se pudo determinar la URL de redirección.');
+            }
+        });
+    </script>
+    <script src="{% static 'js/cliente/mapa.js' %}"></script>
+   
+</body>
+</html>
+
+
+

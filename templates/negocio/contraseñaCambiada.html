@@ -1,0 +1,25 @@
+{% extends 'negocio/menuAdministrador.html' %}
+{% load static %}
+
+{% block title %} Contraseña Cambiada {% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
+        <h3 class="text-center mb-4 {{color_scheme.color_texto_primario}}">¡Contraseña Cambiada!</h3>
+        <p class="text-center">Tu contraseña ha sido cambiada exitosamente.</p>
+        <div class="text-center mt-4">
+            <a href="{% url 'perfil' %}" class="btn {{color_scheme.color_secundario}} {{color_scheme.color_texto_secundario}}">Volver al Perfil</a>
+        </div>
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mt-3" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

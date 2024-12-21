@@ -1,0 +1,90 @@
+{% extends 'cliente/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamos</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Incluye jQuery -->
+    
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Título principal -->
+        <h4 class="page-title text-center mb-4">
+            ¿Problema con tu orden o servicio? Nos gustaría conocer tu experiencia.
+        </h4>
+
+        <div class="content-container">
+            <!-- Contenedor de la tabla -->
+            <div class="table-container mb-5">
+                <h2 class="table-title">Tus últimos reclamos</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover claims-table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><i class="fas fa-comment-dots"></i> Descripción</th>
+                                <th><i class="fas fa-calendar-alt"></i> Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claims-body">
+                            <!-- Aquí se llenarán los reclamos dinámicamente -->
+                            <tr style="display: none;">
+                                <td>Ejemplo de reclamo</td>
+                                <td>2024-11-28</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Formulario de Reclamos -->
+            <button class="btn btn-primary mb-3" id="toggle-form">
+                <i class="fas fa-plus-circle"></i> Registrar un Reclamo
+            </button>
+
+            <form class="claim-form shadow p-4 rounded" id="claim-form" style="display: none;">
+                {% csrf_token %}
+                <h2 class="form-title text-center"><i class="fas fa-thumbs-down"></i> Registrar un Reclamo</h2>
+                <div class="form-group mb-3">
+                    <label for="description" class="form-label">Descripción:</label>
+                    <textarea id="description" name="description" rows="4" class="form-control" placeholder="Escribe tu experiencia aquí..."></textarea>
+                </div>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancel-form">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/cliente/reclamos.js' %}"></script>
+    <script src="{% static 'js/inactividad.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Animación para mostrar/ocultar el formulario
+            $('#toggle-form').click(function() {
+                $('#claim-form').slideToggle(500); // Alterna con efecto deslizante
+            });
+
+            // Ocultar formulario con el botón "Cancelar"
+            $('#cancel-form').click(function() {
+                $('#claim-form').slideUp(500);
+            });
+
+            // Animación para la carga de los reclamos
+            $('#claims-body tr').each(function(index) {
+                $(this).delay(200 * index).fadeIn(500); // Aparece cada fila con un pequeño retraso
+            });
+        });
+    </script>
+   
+</body>
+</html>
+{% endblock %}
+

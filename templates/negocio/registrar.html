@@ -1,0 +1,95 @@
+{% extends 'negocio/menuAdministrador.html' %}
+{% load static %}
+
+{% block title %}Registrar Usuario{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
+        <h3 class="text-center mb-4 {{color_scheme.color_texto_primario}}">Registrar Usuario</h3>
+        <form method="POST" action="{% url 'crear_usuario_negocio'%}" enctype="multipart/form-data">{% csrf_token %}
+            <input type="hidden" name="rol" value="{{gestion}}">
+            <div class="mb-3">
+                <label for="email" class="form-label {{color_scheme.color_texto_primario}}">Correo electrónico</label>
+                <input type="email" class="form-control" id="email" placeholder="Ingresar correo" required name = "txtCorreoNuevo">
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label {{color_scheme.color_texto_primario}}">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="username" placeholder="Ingresar nombre de usuario" required name = "txtNombreUsuario">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label {{color_scheme.color_texto_primario}}">Contraseña</label>
+                <input type="password" class="form-control" id="password" placeholder="Ingresa una contraseña" required name = "txtPassword">
+            </div>
+            <div class="mb-3">
+                <label for="profile_image" class="form-label {{color_scheme.color_texto_primario}}">Imagen de Perfil</label>
+                <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
+            </div>
+            <button type="submit" class="btn {{color_scheme.color_secundario}} w-100 {{color_scheme.color_texto_secundario}}">Registrar</button>
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none btn btn-danger w-100 {{color_scheme.color_texto_secundario}}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="successModalLabel">¡Éxito!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ message }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "error" %}
+            <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="errorModalLabel">!Error!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ message }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                    errorModal.show();
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+{% endblock %}

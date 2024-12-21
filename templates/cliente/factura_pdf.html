@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            font-size: 18px;
+            
+        }
+
+        .productos {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .productos th,
+        .productos td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .productos th {
+            background-color: #252323;
+            color: white;
+            width: 90%;
+        }
+
+        .tabla-totales {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10px;
+            text-align: left;
+        }
+
+        .tabla-totales td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            width: 50%;
+            /* Asegura que cada celda ocupe el 50% del ancho de la tabla */
+        }
+
+        .tabla-totales tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tabla-totales tr:hover {
+            background-color: #ddd;
+        }
+
+        .tabla-totales strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Nombre de la Empresa</h1>
+    <h2>Factura</h2>
+
+    {% if pedido %}
+    <p><strong>ID del Pedido:</strong> {{ pedido.id_pedido }}</p>
+    <p><strong>Estado del Pedido:</strong> {{ pedido.estado_pedido }}</p>
+    {% endif %}
+
+    <!-- Mostrar el nombre del cliente -->
+    <p><strong>Nombre del Cliente:</strong> {{ nombre_cliente }}</p>
+
+    <table class="productos">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, item in carrito.items %}
+            <tr>
+                <td>{{ item.nombre }}</td>
+                <td>${{ item.precio|floatformat:2 }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ item.subtotal|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totales">
+        <table class="tabla-totales">
+            <tr>
+                <td><strong>Subtotal:</strong></td>
+                <td>${{ subtotal|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <td><strong>Descuento:</strong></td>
+                <td>%{{ monto_descuento }}</td>
+            </tr>
+            <tr>
+                <td><strong>Total:</strong></td>
+                <td>${{ total|floatformat:2 }}</td>
+            </tr>
+            <tr>
+                <td><strong>Método de pago:</strong></td>
+                <td>{{ metodo_pago }}</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Menú de navegación */
+.navbar {
+    background-color: #fff;
+    border-bottom: 2px solid #ff64aa;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 2.5rem;
+}
+
+.navbar-brand {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    color: #ff5ab5;
+    text-decoration: none;
+    font-size: 1.8rem;
+}
+
+.navbar-brand:hover {
+    color: #ff5ab5;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin-left: 11%;
+    padding: 0;
+    gap: 7rem; 
+}
+
+.nav-item {
+    text-align: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.nav-link i {
+    font-size: 1.5rem;
+}
+
+.nav-link:hover {
+    color: #ff5ab5;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+
+
+/* Estilos específicos para pantallas pequeñas */
+@media (max-width: 991px) {
+  .nav-link {
+    font-size: 0.9rem; /* Ajuste de tamaño de fuente */
+  }
+
+  .navbar-nav {
+    flex-direction: column; /* Organizar los ítems en columna */
+    text-align: center;
+  }
+
+  .nav-item {
+    margin-bottom: 5px; /* Espacio entre los elementos */
+  }
+}
+
+
+
+/* Carrusel */
+.carousel-container {
+    position: relative;
+    width: 70%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin: 3rem auto 0 auto;
+}
+
+.carousel {
+    display: flex;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 0;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.carousel-item {
+    flex: 0 0 33.33%;
+    scroll-snap-align: start;
+    user-select: none;
+    transition: transform 0.3s ease-in-out;
+    transform: scale(0.8);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.carousel-item.active {
+    transform: scale(1);
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.carousel-indicators span {
+    width: 10px;
+    height: 10px;
+    background-color: rgb(231, 42, 105);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.carousel-indicators span.active {
+    background-color: white;
+}
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Para evitar que el contenido se corte en pantallas pequeñas */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fdfdfd;
+    padding: 30px 20px; /* Aumento del padding para más espacio */
+    border-radius: 10px;
+    text-align: center;
+    width: 90%;
+    height: auto;
+    max-width: 500px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden; /* Para evitar que el contenido se desborde */
+    min-height: 450px; /* Aumento de altura mínima para evitar que la X se sobreponga */
+}
+/* Imagen dentro del modal */
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Espaciado adicional entre la imagen y el texto */
+}
+/* Título */
+.modal-content h3 {
+    margin: 10px 0;
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+}
+/* Descripción */
+.modal-content p {
+    font-size: 1.2rem;
+    color: #555;
+    margin: 10px 0;
+    font-family: 'Arial', sans-serif;
+}
+/* Precio */
+#modal-price {
+    font-size: 1.5rem;
+    color: #ff64aa;
+    font-weight: bold;
+    margin: 15px 0;
+}
+/* Botón */
+.modal-content button {
+    background-color: #ff64aa;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+.modal-content button:hover {
+    background-color: #ff4085;
+}
+/* Cerrar botón */
+.close-btn {
+    position: absolute;
+    top: 10px; /* Asegura que no se sobreponga a la imagen */
+    right: 10px; /* Ajusta el margen derecho para que quede en la esquina del modal */
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+}
+.close-btn:hover {
+    color: #333;
+}

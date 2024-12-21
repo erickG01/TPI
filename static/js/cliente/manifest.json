@@ -1,0 +1,34 @@
+{
+    "name": "Mi Restaurante",
+    "short_name": "Restaurante",
+    "description": "Aplicacion para que los clientes puedan comprar comida",
+    "theme_color": "#000000",
+    "background_color": "#9d0b74",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "orientation": "portrait",
+    "status_bar": "default",
+    "icons": [
+        {
+            "src": "/static/css/imagenes/icons/app-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/static/css/imagenes/screenshots/screenshot1.png",
+            "sizes": "1915x1078",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/static/css/imagenes/screenshots/screenshot2.jpeg",
+            "sizes": "488x1055",
+            "type": "image/png"
+        }
+    ],
+    "dir": "ltr",
+    "lang": "es-MX"
+}

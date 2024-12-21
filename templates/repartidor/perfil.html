@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Repartidor</title>
+
+     
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="text-center">Perfil del Repartidor</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'perfil_usuario' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Imagen del usuario -->
+                            <div class="mb-3 text-center">
+                                <img src="{{ user.imagen.url }}" alt="Foto de perfil" class="rounded-circle" style="width: 120px; height: 120px;">
+                                <div class="mt-2">
+                                    <label for="imagen" class="form-label">Actualizar Foto</label>
+                                    <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- Correo (Solo lectura) -->
+                            <div class="mb-3">
+                                <label for="correo" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correo" name="correo" value="{{ user.correo }}" readonly>
+                            </div>
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label for="nombre_usuario" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre_usuario" name="nombre_usuario" value="{{ user.nombre_usuario }}" required>
+                            </div>
+                            <!-- Rol (Solo lectura) -->
+                            <div class="mb-3">
+                                <label for="rol_usuario" class="form-label">Rol</label>
+                                <input type="text" class="form-control" id="rol_usuario" name="rol_usuario" value="{{ user.rol_usuario }}" readonly>
+                            </div>
+                            <!-- Contraseña -->
+                            <div class="mb-3">
+                                <label for="password_usuario" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password_usuario" name="password_usuario" placeholder="Nueva contraseña">
+                            </div>
+                            <!-- Botones -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                <a href="{% url 'pedidos_asignados' %}" class="btn btn-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar confirmación -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title " id="successModalLabel">Éxito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="successModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-success text-white" id="redirectButton">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Capturar el formulario y manejar la solicitud AJAX
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Actualizar el modal con el mensaje de éxito
+                document.getElementById('successModalBody').innerText = data.message;
+
+                // Mostrar el modal
+                const modal = new bootstrap.Modal(document.getElementById('successModal'));
+                modal.show();
+
+                // Actualizar dinámicamente el nombre de usuario
+                const nombreUsuarioElement = document.querySelector('#bienvenidoNombre');
+                if (nombreUsuarioElement) {
+                    nombreUsuarioElement.innerText = data.nombre_usuario;
+                }
+
+                // Redirigir a pedidos asignados al cerrar el modal
+                document.getElementById('redirectButton').addEventListener('click', () => {
+                    window.location.href = '{% url "pedidos_asignados" %}';
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+{% extends template %}
+{% load static %}
+{% block title %} Preferencias {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Elegir preferencias</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{% url 'colores_negocio' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row mt-2 mb-4">
+                            <h4>Colores de fondo</h4>
+                            <br>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-2" for="color_primario">Color Primario</label>
+                                    <select class="form-select" id="color_primario" name="color_primario">
+                                        <option disabled selected>Seleccionar color</option>
+                                        <option value="bg-primary">Azul</option>
+                                        <option value="bg-secondary">Gris</option>
+                                        <option value="bg-success">Verde</option>
+                                        <option value="bg-danger">Rojo</option>
+                                        <option value="bg-warning">Amarillo</option>
+                                        <option value="bg-info">Azul Claro</option>
+                                        <option value="bg-dark">Negro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-2" for="color_secundario">Color Secundario</label>
+                                    <select class="form-select" id="color_secundario" name="color_secundario">
+                                        <option disabled selected>Seleccionar color</option>
+                                        <option value="bg-primary">Azul</option>
+                                        <option value="bg-secondary">Gris</option>
+                                        <option value="bg-success">Verde</option>
+                                        <option value="bg-danger">Rojo</option>
+                                        <option value="bg-warning">Amarillo</option>
+                                        <option value="bg-info">Azul Claro</option>
+                                        <option value="bg-dark">Negro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <h4>Colores de texto</h4>
+                            <br>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-2" for="color_texto_primario">Color Primario</label>
+                                    <select class="form-select" id="color_texto_primario" name="color_texto_primario">
+                                        <option disabled selected>Seleccionar color</option>
+                                        <option value="bg-primary">Azul</option>
+                                        <option value="bg-secondary">Gris</option>
+                                        <option value="bg-success">Verde</option>
+                                        <option value="bg-danger">Rojo</option>
+                                        <option value="bg-warning">Amarillo</option>
+                                        <option value="bg-info">Azul Claro</option>
+                                        <option value="bg-dark">Negro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-2" for="color_texto_secundario">Color Secundario</label>
+                                    <select class="form-select" id="color_texto_secundario"
+                                        name="color_texto_secundario">
+                                        <option disabled selected>Seleccionar color</option>
+                                        <option value="bg-primary">Azul</option>
+                                        <option value="bg-secondary">Gris</option>
+                                        <option value="bg-success">Verde</option>
+                                        <option value="bg-danger">Rojo</option>
+                                        <option value="bg-warning">Amarillo</option>
+                                        <option value="bg-info">Azul Claro</option>
+                                        <option value="bg-dark">Negro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <a href="{% if user.rol_usuario == 'Administrador Menú' %}
+                                {% url 'inicio_negocio_menu'%}
+                            {% else %}
+                            {% url 'inicio_negocio_administrador'%}
+                            {% endif %}" class="btn btn-danger btn-md">Cancelar</a>
+                            <button type="submit" class="btn btn-dark btn-md">Guardar</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

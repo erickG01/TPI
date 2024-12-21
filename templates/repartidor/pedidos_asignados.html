@@ -1,0 +1,537 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedidos Asignados</title>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="{{ color_scheme.background_color }}">
+  <!-- Encabezado con opciones -->
+  <header
+    class="d-flex justify-content-between align-items-center p-3 {{ color_scheme.color_secundario }} {{ color_scheme.color_texto_secundario }}">
+    <div>
+      <h1 class="h5 mb-0">Bienvenido, <span id="bienvenidoNombre">{{ nombre_usuario }}</span></h1>
+
+    </div>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <!-- Título o logo del navbar -->
+        <a class="navbar-brand text-dark" href="#">
+        </a>
+        <!-- Botón para colapsar el menú en dispositivos móviles -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarRepartidor"
+          aria-controls="navbarRepartidor" aria-expanded="false" aria-label="Toggle navigation"
+          style="background-color: #ffffff; border-bottom: 1px solid #ddd;">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Contenido del navbar -->
+        <div class="collapse navbar-collapse" id="navbarRepartidor">
+          <div class="d-flex flex-column gap-3 mt-3">
+            <!-- Botón para activar -->
+            <button id="activarBtn"
+              class="btn btn-outline-secondary btn-block {% if repartidor_activo %}d-none{% endif %}"
+              style="border: 1px; color: white; " onclick="cambiarEstadoRepartidor('activar')">
+              Activar
+            </button>
+
+            <!-- Botón para desactivar -->
+            <button id="desactivarBtn"
+              class="btn btn-outline-secondary btn-block {% if not repartidor_activo %}d-none{% endif %}"
+              style="border: 1px; color: white; " onclick="cambiarEstadoRepartidor('desactivar')">
+              Desactivar
+            </button>
+
+            <!-- Botón para escoger pedido -->
+            <button id="escogerPedidoBtn"
+              class="btn btn-outline-secondary btn-block {% if not repartidor_activo %}disabled{% endif %}"
+              style="border: 1px; color: white; " onclick="mostrarPedidosPendientes()">
+              Escoger Pedido
+            </button>
+
+            <!-- Menú desplegable -->
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px; color: white; ">
+                Opciones
+              </button>
+              <ul class="dropdown-menu" style="border: 1px ">
+                <li>
+                  <a class="dropdown-item text-dark" href="{% url 'perfil_usuario' %}">Perfil</a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+
+  </header>
+
+ <!-- Mostrar pedidos asignados -->
+<div class="container mt-4">
+  <h1 class="text-center {{ color_scheme.color_primario }}">
+    Pedidos Asignados
+  </h1>
+  {% if pedidos_asignados %}
+  <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for pedido in pedidos_asignados %}
+    <div class="col-md-5 col-lg-4 mb-5" id="pedido-{{ pedido.id_pedido }}">
+      <div class="card shadow-sm" style="max-width: 550px; min-height: 300px">
+        <div class="card-header {{ color_scheme.color_texto_secundario }} {{ color_scheme.color_secundario }}">
+          <h5 class="card-title">Pedido #{{ pedido.id_pedido }}</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            <strong>Cliente:</strong> {{ pedido.id_direccion.cliente.nombre_cliente }}
+          </p>
+          <p>
+            <strong>Teléfono:</strong> {{ pedido.id_direccion.cliente.telefono_cliente }}
+          </p>
+          <p>
+            <strong>Dirección:</strong>
+            Casa #{{ pedido.id_direccion.numero_casa }},
+            Calle {{ pedido.id_direccion.calle }}, Municipio:
+            {{ pedido.id_direccion.municipio }}, Referencia:
+            {{ pedido.id_direccion.punto_referencia }}
+          </p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-sm bg-success text-white" onclick="verDetallePedido('{{ pedido.id_pedido }}')"
+            data-bs-toggle="modal" data-bs-target="#detallePedidoModal">
+            Ver Detalle
+          </button>
+          <button class="btn btn-sm bg-dark text-light entregar-btn"
+            onclick="confirmarEntrega('{{ pedido.id_pedido }}')">
+            Entregar
+          </button>
+          <button class="btn btn-sm bg-danger text-white" onclick="mostrarNoEntregadoModal('{{ pedido.id_pedido }}')">
+            No Entregado
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center">No tienes pedidos asignados.</p>
+  {% endif %}
+</div>
+
+
+  <!-- Modal para Seleccionar Pedido -->
+<div class="modal fade" id="escogerPedidoModal" tabindex="-1" aria-labelledby="escogerPedidoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="escogerPedidoModalLabel">Seleccionar Pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Tabla responsiva para mostrar pedidos -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Dirección</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="pedidosPendientesTable">
+              <!-- Las filas se cargarán dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Modal para Mensajes (apilado sobre Seleccionar Pedido) -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="messageModalLabel">Mensaje</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body" id="messageModalBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-success text-light" data-bs-dismiss="modal">
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle del Pedido -->
+  <div class="modal fade" id="detallePedidoModal" tabindex="-1" aria-labelledby="detallePedidoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header {{ color_scheme.color_secundario }} {{ color_scheme.color_texto_secundario }}">
+          <h5 class="modal-title" id="detallePedidoModalLabel">
+            Detalle del Pedido
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenedor para tabla responsiva -->
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="detalleProductosBody">
+                <!-- Se llenará dinámicamente -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="3">Total del Pedido</th>
+                  <th id="totalPedido"></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Confirmación -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">
+            Confirmar Acción
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body" id="confirmationModalBody">
+          ¿Estás seguro de que deseas entregar este pedido?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-danger text-light" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn bg-success text-light" id="confirmEntregaButton">
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div class="modal fade" id="noEntregadoModal" tabindex="-1" aria-labelledby="noEntregadoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="noEntregadoModalLabel">
+            Confirmar No Entregado
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            ¿Estás seguro de que deseas marcar este pedido como "No
+            Entregado"?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn bg-success text-light" id="confirmNoEntregadoButton">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function mostrarMensaje(mensaje) {
+      document.getElementById("messageModalBody").innerText = mensaje;
+      const modal = new bootstrap.Modal(
+        document.getElementById("messageModal"),
+        {
+          backdrop: "static", // Evitar que el modal cierre otros modales
+          keyboard: false,
+        }
+      );
+      modal.show();
+    }
+
+    function cambiarEstadoRepartidor(accion) {
+      const url =
+        accion === "activar"
+          ? "/repartidor/activar/"
+          : "/repartidor/desactivar/";
+      fetch(url, {
+        method: "POST",
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          mostrarMensaje(data.message);
+          if (data.success) {
+            const escogerPedidoBtn = document.getElementById("escogerPedidoBtn");
+
+            if (accion === "activar") {
+              document.getElementById("activarBtn").classList.add("d-none");
+              document.getElementById("desactivarBtn").classList.remove("d-none");
+              escogerPedidoBtn.removeAttribute("disabled"); // Habilitar botón de "Escoger Pedido"
+            } else {
+              document.getElementById("desactivarBtn").classList.add("d-none");
+              document.getElementById("activarBtn").classList.remove("d-none");
+              escogerPedidoBtn.setAttribute("disabled", true); // Deshabilitar botón de "Escoger Pedido"
+            }
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+
+
+    function confirmarEntrega(pedidoId) {
+      // Mostrar el modal de confirmación
+      const confirmationModal = new bootstrap.Modal(
+        document.getElementById("confirmationModal")
+      );
+      confirmationModal.show();
+
+      // Configurar la acción al confirmar
+      const confirmButton = document.getElementById("confirmEntregaButton");
+      confirmButton.onclick = () => {
+        // Cerrar el modal
+        confirmationModal.hide();
+
+        // Realizar la petición para entregar el pedido
+        fetch(`/repartidor/entregar_pedido/${pedidoId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            mostrarMensaje(data.message); // Mostrar mensaje en un modal
+            if (data.success) {
+              document.getElementById(`pedido-${pedidoId}`).remove(); // Eliminar el pedido entregado de la lista
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            mostrarMensaje(
+              "Ocurrió un error al intentar entregar el pedido."
+            );
+          });
+      };
+    }
+
+    function mostrarPedidosPendientes() {
+  fetch("/repartidor/listar_pedidos/")
+    .then((response) => response.json())
+    .then((data) => {
+      const tableBody = document.getElementById("pedidosPendientesTable");
+      tableBody.innerHTML = ""; // Limpiar el contenido previo
+
+      if (data.success && data.pedidos.length > 0) {
+        // Agregar las filas al cuerpo de la tabla
+        data.pedidos.forEach((pedido) => {
+          const row = `
+            <tr>
+              <td>${pedido.id_pedido}</td>
+              <td>${pedido.nombre_cliente}</td>
+              <td>${pedido.direccion}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="asignarPedido(${pedido.id_pedido})">Seleccionar</button>
+              </td>
+            </tr>
+          `;
+          tableBody.insertAdjacentHTML("beforeend", row);
+        });
+      } else {
+        // Si no hay pedidos pendientes
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center">No hay pedidos pendientes.</td>
+          </tr>
+        `;
+      }
+
+      // Mostrar el modal
+      const modal = new bootstrap.Modal(document.getElementById("escogerPedidoModal"));
+      modal.show();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      mostrarMensaje("Ocurrió un error al obtener los pedidos pendientes.");
+    });
+}
+
+
+    function verDetallePedido(pedidoId) {
+      fetch(`/repartidor/detalle_pedido/${pedidoId}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // Depuración: verificar qué datos llegan al cliente
+
+          if (data.success) {
+            const detallesBody = document.getElementById(
+              "detalleProductosBody"
+            );
+            detallesBody.innerHTML = ""; // Limpiar el contenido previo del modal
+
+            data.detalles.forEach((detalle) => {
+              const row = `
+                    <tr>
+                        <td>${detalle.nombre_producto}</td>
+                        <td>${detalle.cantidad}</td>
+                        <td>$${parseFloat(detalle.precio_unitario).toFixed(
+                2
+              )}</td>
+                        <td>$${parseFloat(detalle.total).toFixed(2)}</td>
+                    </tr>
+                `;
+              detallesBody.insertAdjacentHTML("beforeend", row);
+            });
+
+            // Actualizar el total del pedido
+            document.getElementById(
+              "totalPedido"
+            ).textContent = `$${parseFloat(data.total_pedido).toFixed(2)}`;
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Ocurrió un error al obtener el detalle del pedido.");
+        });
+    }
+
+    function mostrarMensaje(mensaje) {
+      document.getElementById("messageModalBody").innerText = mensaje;
+      const modal = new bootstrap.Modal(
+        document.getElementById("messageModal"),
+        {
+          backdrop: "static", // Evitar que el modal cierre otros modales
+          keyboard: false,
+        }
+      );
+      modal.show();
+    }
+
+    function asignarPedido(pedidoId) {
+      fetch(`/repartidor/asignar_pedido/${pedidoId}/`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const modal = new bootstrap.Modal(
+            document.getElementById("messageModal")
+          );
+          const modalBody = document.getElementById("messageModalBody");
+          modalBody.innerText = data.message; // Mostrar el mensaje del servidor en el modal
+          modal.show();
+
+          if (data.success) {
+            // Recargar la página después de que el modal se cierre
+            modal._element.addEventListener("hidden.bs.modal", () => {
+              location.reload();
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          const modal = new bootstrap.Modal(
+            document.getElementById("messageModal")
+          );
+          const modalBody = document.getElementById("messageModalBody");
+          modalBody.innerText =
+            "Ocurrió un error al intentar asignar el pedido.";
+          modal.show();
+        });
+    }
+
+    let pedidoNoEntregadoId = null;
+
+    function mostrarNoEntregadoModal(pedidoId) {
+      pedidoNoEntregadoId = pedidoId; // Guardar el ID del pedido en una variable global
+      const modal = new bootstrap.Modal(
+        document.getElementById("noEntregadoModal")
+      );
+      modal.show();
+    }
+
+    document
+      .getElementById("confirmNoEntregadoButton")
+      .addEventListener("click", () => {
+        if (pedidoNoEntregadoId) {
+          fetch(`/repartidor/no_entregado/${pedidoNoEntregadoId}/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const modal = bootstrap.Modal.getInstance(
+                document.getElementById("noEntregadoModal")
+              );
+              modal.hide(); // Cerrar el modal
+              mostrarMensaje(data.message); // Mostrar mensaje de éxito o error
+              if (data.success) {
+                document
+                  .getElementById(`pedido-${pedidoNoEntregadoId}`)
+                  .remove(); // Eliminar tarjeta del pedido
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              mostrarMensaje(
+                "Ocurrió un error al cambiar el estado del pedido."
+              );
+            });
+        }
+      });
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{% extends 'cliente/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Dirección</title>
+    <link rel="stylesheet" href="{% static 'css/cliente/editar_direccion.css' %}">
+    <script>
+        // Función para cargar valores seleccionados en el formulario
+        document.addEventListener('DOMContentLoaded', () => {
+            const departamento = localStorage.getItem('departamento') || '{{ direccion.departamento }}';
+            const municipio = localStorage.getItem('municipio') || '{{ direccion.municipio }}';
+
+            document.getElementById('departamento').value = departamento;
+            document.getElementById('municipio').value = municipio;
+
+            // Bloquear edición de los campos
+            document.getElementById('departamento').readOnly = true;
+            document.getElementById('municipio').readOnly = true;
+        });
+    </script>
+</head>
+<body>
+    <h2 class="titulo_direccion">Editar dirección</h2>
+
+    <main>
+        <form id="form-direccion" method="POST" action="{% url 'editar_direccion' direccion.id_direccion %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="{{ direccion.nombre_direccion }}" placeholder="Introduce tu nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="departamento">Departamento:</label>
+                <input type="text" id="departamento" name="departamento" readonly>
+            </div>
+            <div class="form-group">
+                <label for="numero-casa">Número de Casa:</label>
+                <input type="number" id="numero_casa" name="numero_casa" value="{{ direccion.numero_casa }}" placeholder="Introduce el número de tu casa" required>
+            </div>
+            <div class="form-group">
+                <label for="municipio">Municipio:</label>
+                <input type="text" id="municipio" name="municipio" readonly>
+            </div>
+            <div class="form-group">
+                <label for="calle">Calle:</label>
+                <input type="text" id="calle" name="calle" value="{{ direccion.calle }}" placeholder="Introduce el nombre de tu calle" required>
+            </div>
+            <div class="form-group">
+                <label for="punto-referencia">Punto de Referencia:</label>
+                <input type="text" id="punto_referencia" name="punto_referencia" value="{{ direccion.punto_referencia }}" placeholder="Introduce un punto de referencia" required>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-submit">Guardar Dirección</button>
+                <!-- Enlace hacia el mapa con el parámetro next -->
+                <a href="{% url 'mapa' %}?next={% url 'editar_direccion' direccion.id_direccion %}" class="btn-submit btn-secondary">Cambiar Dirección</a>
+            </div>
+        </form>        
+    </main>
+  
+</body>
+</html>
+{% endblock %}
+

@@ -1,0 +1,241 @@
+{% extends 'negocio/menuAdministrador.html' %}
+{% load static %}
+
+{% block title %} Gestionar Lealtad {% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Gestionar Lealtad</h1>
+
+    {% if messages %}
+    <div class="mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#crear_cupon">Crear Cupón</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#cupones">Administrar Cupones</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#crear_puntos">Crear Puntos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#puntos">Administrar Puntos</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- CREAR CUPON -->
+        <div class="tab-pane fade show active" id="crear_cupon">
+            <h3 class="text-center mb-4">Crear Cupón</h3>
+            <div class="d-flex justify-content-center">
+                <form method="post" class="p-4 border rounded shadow-sm" style="width: 500px; background-color: #f9f9f9;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="correo_cliente" class="form-label">Correo del Cliente</label>
+                        <input type="email" class="form-control form-control-sm" id="correo_cliente" name="correo_cliente" placeholder="Correo del Cliente" required>   
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo_descuento" class="form-label">Tipo de Descuento</label>
+                        <input type="text" class="form-control form-control-sm" id="tipo_descuento" value="Cupón" disabled>
+                        <input type="hidden" class="form-control form-control-sm" id="tipo_descuento" name="tipo_descuento" value="Cupón">
+                    </div>
+                    <div class="mb-3">
+                        <label for="monto_descuento" class="form-label">Monto de Descuento en (%)</label>
+                        <input type="number" class="form-control form-control-sm" id="monto_descuento" name="monto_descuento">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado_descuento" class="form-label">Estado</label>
+                        <select class="form-select form-select-sm" id="estado_descuento" name="estado_descuento" required>
+                            <option value="True">Activo</option>
+                            <option value="False">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" class="form-control form-control-sm" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm w-100" name="create_cupon">Crear Cupón</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ADMINISTRAR CUPONES -->
+        <div class="tab-pane fade" id="cupones">
+            <h3>Lista de Cupones</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Vencimiento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cupon in cupones %}
+                            <tr>
+                                <td>{{ cupon.correo_cliente.correo_cliente }}</td>
+                                <td>{{ cupon.tipo_descuento }}</td>
+                                <td>{{ cupon.monto_descuento }}%</td>
+                                <td>{{ cupon.estado_descuento|yesno:"Activo,Inactivo" }}</td>
+                                <td>{{ cupon.fecha_vencimiento }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" onclick="editarCupon( '{{cupon.id_descuento}}','{{ cupon.correo_cliente.correo_cliente }}', '{{ cupon.tipo_descuento }}', '{{ cupon.monto_descuento }}', '{{ cupon.estado_descuento }}', '{{ cupon.fecha_vencimiento }}')">Editar</button>
+
+                                    <form method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id_descuento" value="{{ cupon.id_descuento }}">
+                                        <button type="submit" class="btn btn-sm btn-danger" name="delete">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">No se encontraron resultados</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Actualizar cupón</h3>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_descuento_actualizar" id="id_descuento_actualizar">
+                <div class="mb-3">
+                    <label for="correo_cliente" class="form-label">Cliente</label>
+                    <input type="text" class="form-control" id="correo_cliente_actualizar" name="correo_cliente" placeholder="Correo del Cliente" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="tipo_descuento" class="form-label">Tipo de Descuento</label>
+                    <input type="text" class="form-control" id="tipo_descuento_actualizar" name="tipo_descuento" value="Cupón" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="monto_descuento" class="form-label">Monto de Descuento en (%)</label>
+                    <input type="number" class="form-control form-control-sm" id="monto_descuento_actualizar" name="monto_descuento_actualizar">
+                </div>
+                <div class="mb-3">
+                    <label for="estado_descuento" class="form-label">Estado</label>
+                    <select class="form-select" id="estado_descuento" name="estado_descuento_actualizar" required>
+                        <option value="True">Activo</option>
+                        <option value="False">Inactivo</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
+                    <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento_actualizado" required>
+                </div>
+                <button type="submit" class="btn btn-primary" name="edit_cupon">Actualizar Cupón</button>
+            </form>
+        </div>
+
+        <!-- CREAR PUNTOS -->
+        <div class="tab-pane fade" id="crear_puntos">
+            <div class="alert alert-info">
+                <strong>Estado del programa de lealtad: </strong>
+                {% if programa_lealtad_activo %}
+                    <span class="text-success">Activo</span>
+                {% else %}
+                    <span class="text-danger">Desactivado</span>
+                {% endif %}
+            </div>
+        
+            <div class="d-flex justify-content-center mb-4">
+                <form method="post" class="p-4 border rounded shadow-sm" style="width: 400px; background-color: #f9f9f9;">
+                    {% csrf_token %}
+                    {% if programa_lealtad_activo %}
+                        <button type="submit" name="desactivar_programa" class="btn btn-danger btn-sm w-100">Desactivar Programa</button>
+                    {% else %}
+                        <button type="submit" name="activar_programa" class="btn btn-success btn-sm w-100">Activar Programa</button>
+                    {% endif %}
+                </form>
+            </div>
+        
+            <h3 class="text-center mb-4">Crear Puntos</h3>
+            <div class="d-flex justify-content-center">
+                <form method="post" class="p-4 border rounded shadow-sm" style="width: 500px; background-color: #f9f9f9;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="correo_cliente" class="form-label">Correo Cliente</label>
+                        <input type="email" class="form-control form-control-sm" id="correo_cliente" name="correo_cliente" 
+                               placeholder="Correo del Cliente" {% if not programa_lealtad_activo %}disabled{% endif %} required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo_descuento" class="form-label">Tipo de Descuento</label>
+                        <input type="text" class="form-control form-control-sm" value="Puntos" disabled>
+                        <input type="hidden" class="form-control form-control-sm" id="tipo_descuento" name="tipo_descuento" value="Puntos">
+                    </div>
+                    <div class="mb-3">
+                        <label for="monto_descuento" class="form-label">Cantidad de Puntos</label>
+                        <input type="number" class="form-control form-control-sm" id="monto_descuento" name="monto_descuento" 
+                               placeholder="Cantidad de Puntos" {% if not programa_lealtad_activo %}disabled{% endif %} required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado_descuento" class="form-label">Estado</label>
+                        <select class="form-select form-select-sm" id="estado_descuento" name="estado_descuento" 
+                                {% if not programa_lealtad_activo %}disabled{% endif %} required>
+                            <option value="True">Activo</option>
+                            <option value="False">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" class="form-control form-control-sm" id="fecha_vencimiento" name="fecha_vencimiento" 
+                               {% if not programa_lealtad_activo %}disabled{% endif %} required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm w-100" name="create_puntos">Crear Puntos</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ADMINISTRAR PUNTOS -->
+        <div class="tab-pane fade" id="puntos">
+            <h3>Lista de Puntos</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Correo del Cliente</th>
+                        <th>Tipo</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Fecha de Vencimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for punto in puntos %}
+                    <tr>
+                        <td>{{ punto.correo_cliente.correo_cliente }}</td>
+                        <td>{{ punto.tipo_descuento }}</td>
+                        <td>{{ punto.monto_descuento }}</td>
+                        <td>{{ punto.estado_descuento|yesno:"Activo,Inactivo" }}</td>
+                        <td>{{ punto.fecha_vencimiento }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No se encontraron puntos</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/negocio/lealtad.js'%}"></script>
+{% endblock %}

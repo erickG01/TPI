@@ -1,0 +1,67 @@
+{% extends 'cliente/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Dirección</title>
+    <link rel="stylesheet" href="{% static 'css/cliente/crear_direccion.css' %}">
+
+    <script>
+        // Función para cargar valores seleccionados en el formulario
+        document.addEventListener('DOMContentLoaded', () => {
+            const departamento = localStorage.getItem('departamento') || '';
+            const municipio = localStorage.getItem('municipio') || '';
+
+            document.getElementById('departamento').value = departamento;
+            document.getElementById('municipio').value = municipio;
+
+            // Bloquear edición de los campos
+            document.getElementById('departamento').readOnly = true;
+            document.getElementById('municipio').readOnly = true;
+        });
+    </script>
+</head>
+<body>
+    <h2 class="titulo_direccion">Crear una nueva dirección</h2>
+
+    <main>
+        <form id="form-direccion" method="POST" action="{% url 'crear_direccion' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Introduce tu nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="departamento">Departamento:</label>
+                <input type="text" id="departamento" name="departamento" readonly>
+            </div>
+            <div class="form-group">
+                <label for="numero-casa">Número de Casa:</label>
+                <input type="number" id="numero_casa" name="numero_casa" placeholder="Introduce el número de tu casa" required>
+            </div>
+            <div class="form-group">
+                <label for="municipio">Municipio:</label>
+                <input type="text" id="municipio" name="municipio" readonly>
+            </div>
+            <div class="form-group">
+                <label for="calle">Calle:</label>
+                <input type="text" id="calle" name="calle" placeholder="Introduce el nombre de tu calle" required>
+            </div>
+            <div class="form-group">
+                <label for="punto-referencia">Punto de Referencia:</label>
+                <input type="text" id="punto_referencia" name="punto_referencia" placeholder="Introduce un punto de referencia" required>
+            </div>
+            <button type="submit" class="btn-submit">Guardar Dirección</button>
+        </form>
+        
+        
+    </main>
+    <script src="{% static 'js/cliente/crear_direccion.js' %}"></script>
+   
+</body>
+</html>
+{% endblock %}

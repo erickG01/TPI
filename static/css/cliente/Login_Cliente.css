@@ -1,0 +1,136 @@
+body {
+    background-color: #f8f9fa;
+  }
+
+  .login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    color: rgb(53, 52, 52);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+   h4{
+    color: black;
+   }
+
+
+  .logo {
+    max-width: 100%;
+    height: auto;
+  }
+
+.btn-primary {
+    background-color: rgb(231, 42, 105);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: rgb(255, 84, 141);
+}
+
+.card-header {
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.input-group {
+    margin-top: 1rem;
+}
+
+.custom-link:hover {
+    color: #9d0b74; /* Color al pasar el cursor */
+  }
+
+/*PARTE DE CARGA*/
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: none; /* Oculto por defecto */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#loading-animation {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+#loading-animation .steam {
+  position: absolute;
+  width: 20px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: steam-rise 2s infinite ease-in-out;
+}
+
+#loading-animation .steam:nth-child(1) {
+  left: 20px;
+  animation-delay: 0s;
+}
+
+#loading-animation .steam:nth-child(2) {
+  left: 60px;
+  animation-delay: 0.5s;
+}
+
+#loading-animation .steam:nth-child(3) {
+  left: 100px;
+  animation-delay: 1s;
+}
+
+@keyframes steam-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+#loading-animation .plate {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: #ff6347; /* Color del plato */
+  border-radius: 0 0 100px 100px;
+}
+
+#loading-animation .fork {
+  position: absolute;
+  top: 20px;
+  left: 120px;
+  width: 10px;
+  height: 70px;
+  background: #333;
+  border-radius: 5px;
+  animation: fork-wiggle 1.5s infinite ease-in-out;
+}
+
+@keyframes fork-wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+#loading-text {
+  margin-top: 20px;
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}

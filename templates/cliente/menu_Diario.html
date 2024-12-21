@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante - Menú Ajustado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/cliente/menu_Diario.css' %}">
+    <script>const csrfToken = "{{ csrf_token }}";</script>
+
+</head>
+
+
+<body>
+    <!-- Menú de Navegación -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'menu_Diario' %}">
+                        <i class="fas fa-home"></i> Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'direcciones' %}">
+                        <i class="fas fa-motorcycle"></i> McDelivery
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'comida' %}">
+                        <i class="fas fa-utensils"></i> Comida
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reclamos' %}">
+                        <i class="fas fa-file-alt"></i> Reclamos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ver_carrito' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Carrito
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'editar_cliente' %}">
+                        <i class="fas fa-user"></i> Mi Cuenta
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+  <!-- Carrusel -->
+<div class="carousel-container">
+    <div class="carousel">
+        {% for detalle in detalles_menu %}
+        <div class="carousel-item">
+            <img src="{{ detalle.imagen_url }}" 
+                 alt="{{ detalle.id_producto__nombre_producto }}" 
+                 class="carousel-img"
+                 data-id="{{ detalle.id_producto }}"
+                 data-nombre="{{ detalle.id_producto__nombre_producto }}"
+                 data-descripcion="{{ detalle.id_producto__descripcion_producto }}"
+                 data-precio="{{ detalle.id_producto__precio_producto }}">
+        </div>
+        {% endfor %}
+    </div>
+    <div class="carousel-indicators">
+        {% for detalle in detalles_menu %}
+        <span data-index="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></span>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="product-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <button class="close-btn">&times;</button>
+        <img id="modal-img" src="" alt="Imagen del producto">
+        <h3 id="modal-title"></h3>
+        <p id="modal-description"></p>
+        <p id="modal-price"></p>
+        <button id="add-to-cart-btn" class="btn-agregar">Agregar al carrito</button>
+    </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/cliente/menu_Diario.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

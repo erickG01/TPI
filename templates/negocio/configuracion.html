@@ -1,0 +1,30 @@
+{% extends 'negocio/menuAdministrador.html' %}
+{% load static %}
+
+{% block title %} Gestion {% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Configuración de Empresa</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ configuracion.nombre }}" placeholder="Nombre de la empresa" required>
+            </div>
+            <div class="mb-3">
+               
+                <input type="text" class="form-control" id="slogan" name="slogan" value="{{ configuracion.slogan }}" placeholder="Slogan" required>
+            </div>
+            <div class="mb-3">
+                <label for="logo" class="form-label">Logo</label>
+                <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                {% if configuracion.logo %}
+                    <img src="{{ configuracion.logo }}" alt="Logo Actual" class="img-fluid mt-2" style="max-width: 200px;">
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+    </div>
+   
+    {% endblock %}

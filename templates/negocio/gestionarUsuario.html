@@ -1,0 +1,50 @@
+{% extends 'negocio/menuAdministrador.html' %}
+{% load static %}
+
+{% block title %} Gestion {% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1 class="mb-4 text-center animate__animated animate__fadeIn">Gestión De Usuarios De {{gestion}}</h1>
+
+    <!-- Primera fila -->
+    <div class="row g-4 mb-4">
+        <!-- Tarjeta Crear Usuario -->
+        <div class="col-md-4">
+            <div class="card h-100 text-center bg-dark border-0 animate__animated animate__slideInUp">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Crear Usuario</h5>
+                    <p class="card-text text-white">Añade un nuevo usuario al sistema.</p>
+                    <a href="{% url 'registrar_usuario' gestion%}" class="btn btn-outline-info">Ir a Crear</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta Actualizar Usuario centrada -->
+        <div class="col-md-4">
+            <div class="card h-100 text-center bg-dark border-0 animate__animated animate__slideInUp">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Actualizar Usuario</h5>
+                    <p class="card-text text-white">Edita la información de un usuario existente.</p>
+                    <a href="{% url 'actualizarUsuario' gestion%}" class="btn btn-outline-warning">Ir a Actualizar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta Buscar Usuario -->
+        <div class="col-md-4">
+            <div class="card h-100 text-center bg-dark border-0 animate__animated animate__slideInUp">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Buscar Usuario</h5>
+                    <p class="card-text text-white">Busca usuarios en la base de datos.</p>
+                    <a href="{% url 'buscarUsuario' gestion %}" class="btn btn-outline-success">Ir a Buscar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+{% endblock %}
