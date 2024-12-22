@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-# Import dj-database-url at the beginning of the file.
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gwmrj669pw^#v+!ebk-m6)=kznj_xyt2wb@gqdlsotxk)9g32o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -102,9 +100,14 @@ WSGI_APPLICATION = 'TPI_PROJECT.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-     'default': dj_database_url.config(
-        default="postgresql://render:JDCgvVOkzMeKHEDTuS1tKBGxa96VgQE1@dpg-ctj3c85ds78s73emp110-a.oregon-postgres.render.com/tpi_sier"
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tpi',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 SITE_ID = 1
