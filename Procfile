@@ -1,1 +1,1 @@
-web: gunicorn TPI_PROJECT.wsgi
+web: python manage.py collectstatic && gunicorn TPI_PROJECT.wsgi
