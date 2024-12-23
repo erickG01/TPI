@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const direccionSelect = document.getElementById('direccionSeleccionada');
 
         // Realizar la solicitud AJAX para obtener las direcciones
-        fetch('/api/direcciones/')
+        fetch('https://web-production-6242f.up.railway.app//api/direcciones/')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error en la solicitud: ' + response.statusText);
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //FIN DE OBTENER IDS PRODUCTOS Y CANTIDAD
 
-        fetch('/registrar_pedido/', {
+        fetch('https://web-production-6242f.up.railway.app/registrar_pedido/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ let totalOriginal = parseFloat(totalPagoLabel.textContent.replace(/[^0-9.]/g, ''
 
 // Cargar descuentos al abrir el modal
 document.getElementById('modalPago').addEventListener('show.bs.modal', function () {
-    fetch('/cliente/cupones')
+    fetch('https://web-production-6242f.up.railway.app/cliente/cupones')
         .then(response => response.json())
         .then(data => {
             listaDescuentos.innerHTML = '';  // Limpiar la tabla
@@ -222,7 +222,7 @@ listaDescuentos.addEventListener('click', function (e) {
         console.log("Descuento aplicado:", montoDescuento, "Nuevo total:", totalConDescuento);
 
         // Eliminar de la base de datos
-        fetch('/cliente/eliminar-descuento/', {
+        fetch('https://web-production-6242f.up.railway.app/cliente/eliminar-descuento/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Función para cargar los reclamos al cargar la página
     async function loadReclamos() {
         try {
-            const response = await fetch("/gestionar-reclamos/");
+            const response = await fetch("https://web-production-6242f.up.railway.app/gestionar-reclamos/");
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

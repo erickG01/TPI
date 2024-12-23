@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addToCartBtn.addEventListener("click", () => {
         if (currentProductId) {
             // Realizar una petición al backend
-            fetch(`/carrito/agregar/${currentProductId}/`, {
+            fetch(`https://web-production-6242f.up.railway.app/carrito/agregar/${currentProductId}/`, {
                 method: "POST",
                 headers: {
                     "X-CSRFToken": getCookie("csrftoken"),
