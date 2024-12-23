@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const direccionSelect = document.getElementById('direccionSeleccionada');
 
         // Realizar la solicitud AJAX para obtener las direcciones
-        fetch('https://web-production-6242f.up.railway.app//api/direcciones/')
+        fetch('https://web-production-6242f.up.railway.app/api/direcciones/')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error en la solicitud: ' + response.statusText);

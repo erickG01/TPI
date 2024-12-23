@@ -28,7 +28,7 @@ def login_cliente(request):
             cliente = Cliente.objects.get(correo_cliente=email)
             if cliente.check_password(password):
                 request.session['cliente_id'] = cliente.correo_cliente
-                print(f"Cliente logueado: {cliente.correo_cliente}")  # Debug
+              
                 return redirect('menu_Diario')
             else:
                 error_message = "Credenciales incorrectas"
@@ -96,13 +96,12 @@ def registro_cliente(request):
                 password_cliente=make_password(password_cliente),
                 puntos=0, 
             )
-            messages.success(request, 'Usuario creado exitosamente. Ahora puedes iniciar sesión.')
             return redirect('login_cliente')
         except IntegrityError:
-            messages.error(request, 'Ya existe un cliente con este correo.')
+           
             return redirect('registro_cliente')
         except Exception as e:
-            messages.error(request, f'Ocurrió un error al registrar al cliente: {str(e)}')
+           
             return redirect('registro_cliente')
 
     return render(request, 'cliente/registro_cliente.html/')
@@ -145,7 +144,7 @@ def editar_cliente(request):
 
             cliente.save()
 
-            messages.success(request, 'Datos actualizados correctamente.')
+        
             return redirect('editar_cliente')
 
         except Exception as e:
@@ -238,7 +237,6 @@ def crear_direccion(request):
             punto_referencia=punto_referencia,
         )
 
-        messages.success(request, "Dirección guardada con éxito.")
         return redirect('direcciones') 
 
     return render(request, 'cliente/crear_direccion.html/')
